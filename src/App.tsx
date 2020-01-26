@@ -28,7 +28,7 @@ const App: React.FC = () => {
         </div>
         <div>
           <button onClick={handleButtonClick}>
-            Click Me
+            Format
           </button>
         </div>
       </Row>
