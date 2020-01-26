@@ -1,6 +1,7 @@
 const electron = require('electron');
 const ipcMain = require('electron').ipcMain;
 const spawn = require('child_process').spawn;
+const fixPath = require('fix-path');
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
@@ -12,7 +13,7 @@ const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-
+fixPath();
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log(arg); // prints "ping"
 
