@@ -30,6 +30,10 @@ ipcMain.on('asynchronous-message', (event, arg) => {
 
 });
 
+function getIsDev() {
+  return process.env.ELECTRON_ENV === 'development';
+}
+
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -37,12 +41,15 @@ function createWindow() {
 	    height: 600,
 	    webPreferences: { nodeIntegration: true },
     });
-
+    const isDev = getIsDev();
+    const url = isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`;
     // and load the index.html of the app.
-    mainWindow.loadURL('http://localhost:3000');
+    mainWindow.loadURL(url);
 
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if (isDev){
+      // Open the DevTools.
+      mainWindow.webContents.openDevTools();
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

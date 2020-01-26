@@ -21,12 +21,13 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
+    "electron-dev": "ELECTRON_ENV=development ELECTRON_START_URL=http://localhost:3000 electron .",
     "dist": "electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "homepage": ".",
   "postinstall": "electron-builder install-app-deps",
   "browserslist": {
     "production": [
@@ -51,6 +52,8 @@
     },
     "files": [
       "./dist/**/*",
+      "./build/**/*",
+      "./src/**/*",
       "./public/electron.js"
     ],
     "extends": null
