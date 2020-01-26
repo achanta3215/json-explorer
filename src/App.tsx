@@ -1,25 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
+// import cp from 'child_process';
+// import { ipcRenderer } from 'electron';
 import logo from './logo.svg';
 import './App.css';
+import { Grid, Row } from './common/Components';
+const cp = require('child_process');
+const { ipcRenderer } = window.require('electron')
+
 
 const App: React.FC = () => {
+  const [jsonInputState, setJsonInputState] = useState('{}');
+  const handleButtonClick = () => {
+    ipcRenderer.send('asynchronous-message', `${jsonInputState}`)
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      setJsonInputState(arg);
+    });
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Row>
+        <div>
+          <textarea
+            className='json-input'
+            value={jsonInputState}
+            onChange={(val) => setJsonInputState(val.target.value)}
+          />
+        </div>
+        <div>
+          <button onClick={handleButtonClick}>
+            Click Me
+          </button>
+        </div>
+      </Row>
+    </React.Fragment>
   );
 }
 

@@ -15,15 +15,19 @@
     "react-scripts": "3.3.0",
     "typescript": "~3.7.2"
   },
+  "main": "./public/electron.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-dev": "ELECTRON_START_URL=http://localhost:3000 electron .",
+    "dist": "electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
+  "postinstall": "electron-builder install-app-deps",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -35,5 +39,20 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "electron": "^7.1.9",
+    "electron-builder": "^22.2.0"
+  },
+  "build": {
+    "appId": "com.geniuscreations.jsonexplorer",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "files": [
+      "./dist/**/*",
+      "./public/electron.js"
+    ],
+    "extends": null
   }
 }
