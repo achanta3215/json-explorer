@@ -1,34 +1,28 @@
 const electron = require('electron');
 const ipcMain = require('electron').ipcMain;
-const spawn = require('child_process').spawn;
 const fixPath = require('fix-path');
+const path = require('path');
+const { JqProcessChannel } = require(
+  '../src/ipc/JqProcessChannel.ts',
+);
 // Module to control application life.
 const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
-const path = require('path');
 const url = require('url');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 fixPath();
-ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg); // prints "ping"
-
-  event.returnValue = 'pong';
-  const echoProcess = spawn('echo', [`${arg}`]);
-  const jsonProcess = spawn("jq", ["."]);
-
-  echoProcess.stdout.pipe(jsonProcess.stdin);
-
-  jsonProcess.stdout.on("data", data => {
-    console.log(`Formatted JSON ${data}`);
-    event.reply('asynchronous-reply', `${data}`);
+[
+  new JqProcessChannel()
+].forEach(channel => {
+  ipcMain.on(channel.getName(), (event, request) => {
+    console.log('Yes');
+    channel.handle(event, request);
   });
-
-
 });
 
 function getIsDev() {

@@ -1,6 +1,6 @@
 {
   "name": "json-explorer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.9.0",
@@ -10,21 +10,24 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
+    "esm": "^3.2.25",
     "fix-path": "^2.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-json-tree": "^0.11.2",
     "react-scripts": "3.4.1",
+    "ts-node": "^8.10.2",
     "typescript": "~3.9.3"
   },
-  "main": "./public/electron.js",
+  "main": "./public/index.js",
   "scripts": {
+
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev": "ELECTRON_ENV=development ELECTRON_START_URL=http://localhost:3000 electron .",
-    "dist": "electron-builder"
+    "electron-dev": "TS_NODE_LOG_ERROR=true ELECTRON_ENV=development ELECTRON_START_URL=http://localhost:3000 electron .",
+    "dist": "TS_NODE_FILES=true TS_NODE_PROJECT=tsconfig.prod.json TS_NODE_LOG_ERROR=true electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +59,7 @@
       "./dist/**/*",
       "./build/**/*",
       "./src/**/*",
+      "./public/index.js",
       "./public/electron.js"
     ],
     "extends": null
