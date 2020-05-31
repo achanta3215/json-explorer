@@ -6,7 +6,7 @@ const { spawn } = require('child_process');
 
 
 export class JqProcessChannel
- implements IpcChannelInterface<string, string> {
+ implements IpcChannelInterface<string[], string> {
   getName(): string {
     return 'jq-process';
   }
@@ -14,14 +14,15 @@ export class JqProcessChannel
     return `${this.getName()}-response`;
   }
 
-  handle(event: IpcMainEvent, request: IpcRequest<string>): void {
-    console.log(request.message)
+  handle(event: IpcMainEvent, request: IpcRequest<string[]>): void {
+    console.log(request.messages)
     if (!request.responseChannel) {
       request.responseChannel = this.getResponseName();
     }
     event.returnValue = 'pong';
-    const echoProcess = spawn('echo', [`${request.message}`]);
-    const jsonProcess = spawn("jq", ["."]);
+    const [jsonString, jqFilterValue] = request.messages;
+    const echoProcess = spawn('echo', [`${jsonString}`]);
+    const jsonProcess = spawn("jq", [jqFilterValue]);
 
     echoProcess.stdout.pipe(jsonProcess.stdin);
 
@@ -31,9 +32,9 @@ export class JqProcessChannel
     });
   }
 
-  send(message: string) {
-    const request: IpcRequest<string> = {
-      message,
+  send(messages: string[]) {
+    const request: IpcRequest<string[]> = {
+      messages,
     };
     ipcRenderer.send(this.getName(), request);
   }

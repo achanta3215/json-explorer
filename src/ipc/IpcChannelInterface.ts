@@ -2,7 +2,7 @@ import { IpcMainEvent, IpcRendererEvent } from 'electron';
 
 export interface IpcRequest<T> {
   responseChannel?: string;
-  message: T;
+  messages: T;
 }
 
 export interface IpcResponse<U> {

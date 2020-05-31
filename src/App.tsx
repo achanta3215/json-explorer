@@ -31,14 +31,19 @@ const App: React.FC = () => {
   const handleOnFilterChange = useCallback(event => {
     
   }, []);
+  const [jqFilterValue, setJqFilterValue] = useState('.');
+  const handleJqFilterOnChange = useCallback(event => {
+    setJqFilterValue(event.target.value);
+  }, []);
   const [filterValue, setFilterValue] = useState('');
   const handleButtonClick = () => {
     registerIPCChannel(
       new JqProcessChannel(),
-      jsonInputState,
       (event, response) => {
         setJsonInputState(response);
       },
+      jsonInputState,
+      jqFilterValue,
     );
   };
   const shouldExpandNode = useCallback((keyNames, data, level) => {
@@ -63,6 +68,9 @@ const App: React.FC = () => {
           <button onClick={handleButtonClick}>
             Format
           </button>
+        </div>
+        <div>
+          <input onChange={handleJqFilterOnChange} value={jqFilterValue} />
         </div>
         <div>
           <input onChange={handleOnFilterChange} value={filterValue} />
